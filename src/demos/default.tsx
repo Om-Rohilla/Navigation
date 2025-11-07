@@ -15,7 +15,7 @@ export default function Demo() {
     >
       {/* Ambient shadow wrapper for floating effect */}
       <div
-        className="w-full max-w-3xl"
+        className="w-full max-w-lg"
         style={{
           filter: 'drop-shadow(0 24px 48px rgba(0, 0, 0, 0.1)) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08))',
         }}
