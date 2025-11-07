@@ -30,38 +30,7 @@ export const PillBase: React.FC = () => {
   const pillWidth = useSpring(140, { stiffness: 220, damping: 25, mass: 1 })
   const pillShift = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
 
-  // Scroll detection - track which section is visible
-  useEffect(() => {
-    const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean) as HTMLElement[]
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: '-50% 0px -50% 0px',
-      threshold: 0
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id !== prevSectionRef.current) {
-          // Trigger transition state
-          setIsTransitioning(true)
-          prevSectionRef.current = entry.target.id
-          setActiveSection(entry.target.id)
-          
-          // Reset transition state after animation completes
-          setTimeout(() => {
-            setIsTransitioning(false)
-          }, 400)
-        }
-      })
-    }, observerOptions)
-
-    sections.forEach(section => observer.observe(section))
-
-    return () => {
-      sections.forEach(section => observer.unobserve(section))
-    }
-  }, [])
+  // No scroll detection - purely click-based navigation
 
   // Handle hover expansion
   useEffect(() => {
@@ -94,11 +63,18 @@ export const PillBase: React.FC = () => {
   }
 
   const handleSectionClick = (sectionId: string) => {
+    // Trigger transition state
+    setIsTransitioning(true)
+    prevSectionRef.current = sectionId
     setActiveSection(sectionId)
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    
+    // Collapse the pill after selection
+    setHovering(false)
+    
+    // Reset transition state after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false)
+    }, 400)
   }
 
   const activeItem = navItems.find(item => item.id === activeSection)
