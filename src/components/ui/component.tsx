@@ -7,9 +7,9 @@ import React from 'react'
 export const PillBase: React.FC = () => {
   return (
     <div
-      className="relative w-full max-w-4xl rounded-full"
+      className="relative w-full max-w-2xl rounded-full"
       style={{
-        height: '64px',
+        height: '48px',
         background: 'linear-gradient(180deg, #f8f8f8 0%, #f5f5f7 50%, #f2f2f4 100%)',
         boxShadow: `
           0 2px 4px rgba(0, 0, 0, 0.04),
