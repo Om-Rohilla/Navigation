@@ -7,43 +7,97 @@ import React from 'react'
 export const PillBase: React.FC = () => {
   return (
     <div
-      className="relative rounded-full"
+      className="relative rounded-full overflow-hidden"
       style={{
-        width: '420px',
+        width: '580px',
         height: '50px',
-        background: 'linear-gradient(180deg, #f8f8f8 0%, #f5f5f7 50%, #f2f2f4 100%)',
+        background: `
+          linear-gradient(145deg, #fafafa 0%, #f4f4f6 25%, #f0f0f2 50%, #ececee 75%, #f2f2f4 100%)
+        `,
         boxShadow: `
-          0 2px 4px rgba(0, 0, 0, 0.04),
-          0 8px 16px rgba(0, 0, 0, 0.06),
-          0 20px 32px rgba(0, 0, 0, 0.08),
-          inset 0 1px 1px rgba(255, 255, 255, 0.9),
-          inset 0 -1px 2px rgba(0, 0, 0, 0.04)
+          0 1px 2px rgba(0, 0, 0, 0.03),
+          0 2px 6px rgba(0, 0, 0, 0.04),
+          0 6px 12px rgba(0, 0, 0, 0.06),
+          0 12px 24px rgba(0, 0, 0, 0.08),
+          0 24px 48px rgba(0, 0, 0, 0.1),
+          inset 0 2px 3px rgba(255, 255, 255, 0.95),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.06),
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.4)
         `,
       }}
     >
-      {/* Top highlight layer for 3D lighting */}
+      {/* Glossy top highlight - primary light source */}
       <div 
         className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
         style={{
-          height: '50%',
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%)',
+          height: '55%',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0) 100%)',
         }}
       />
       
-      {/* Bottom shadow layer for depth */}
+      {/* Intense top edge shine */}
+      <div 
+        className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
+        style={{
+          height: '20%',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%)',
+          filter: 'blur(0.5px)',
+        }}
+      />
+      
+      {/* Bottom shadow for depth */}
       <div 
         className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
         style={{
-          height: '30%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0) 100%)',
+          height: '40%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0) 100%)',
         }}
       />
 
-      {/* Outer edge definition */}
+      {/* Ambient occlusion shadow at bottom edge */}
+      <div 
+        className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
+        style={{
+          height: '15%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%)',
+          filter: 'blur(1px)',
+        }}
+      />
+
+      {/* Left-side subtle highlight for dimension */}
+      <div 
+        className="absolute inset-y-0 left-0 rounded-full pointer-events-none"
+        style={{
+          width: '30%',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%)',
+        }}
+      />
+
+      {/* Right-side subtle shadow for dimension */}
+      <div 
+        className="absolute inset-y-0 right-0 rounded-full pointer-events-none"
+        style={{
+          width: '30%',
+          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 100%)',
+        }}
+      />
+
+      {/* Outer edge definition with subtle border */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.03)',
+          boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.04)',
+        }}
+      />
+
+      {/* Specular highlight - creates glass-like quality */}
+      <div 
+        className="absolute left-12 top-2 rounded-full pointer-events-none"
+        style={{
+          width: '120px',
+          height: '12px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%)',
+          filter: 'blur(3px)',
         }}
       />
     </div>

@@ -17,7 +17,11 @@ export default function Demo() {
       <div
         className="flex items-center justify-center"
         style={{
-          filter: 'drop-shadow(0 24px 48px rgba(0, 0, 0, 0.1)) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08))',
+          filter: `
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.04))
+            drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08))
+            drop-shadow(0 28px 56px rgba(0, 0, 0, 0.12))
+          `,
         }}
       >
         <PillBase />
