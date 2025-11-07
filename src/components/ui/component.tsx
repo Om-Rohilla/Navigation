@@ -102,67 +102,151 @@ export const PillBase: React.FC = () => {
         width: pillWidth,
         height: '56px',
         background: `
-          linear-gradient(145deg, #f9f9fb 0%, #f3f3f5 25%, #ededef 50%, #e7e8ea 75%, #e1e2e5 100%)
+          linear-gradient(135deg, 
+            #fcfcfd 0%, 
+            #f8f8fa 15%, 
+            #f3f4f6 30%, 
+            #eeeff2 45%, 
+            #e9eaed 60%, 
+            #e4e5e8 75%, 
+            #dee0e3 90%, 
+            #e2e3e6 100%
+          )
         `,
-        boxShadow: `
-          0 4px 6px rgba(0, 0, 0, 0.18),
-          0 12px 25px rgba(0, 0, 0, 0.10),
-          0 1px 2px rgba(0, 0, 0, 0.10),
-          inset 0 1px 0 rgba(255, 255, 255, 0.65),
-          inset 0 -2px 5px rgba(0, 0, 0, 0.10),
-          inset 2px 2px 6px rgba(0, 0, 0, 0.08),
-          inset -2px 2px 6px rgba(0, 0, 0, 0.07)
-        `,
+        boxShadow: expanded
+          ? `
+            0 2px 4px rgba(0, 0, 0, 0.08),
+            0 6px 12px rgba(0, 0, 0, 0.12),
+            0 12px 24px rgba(0, 0, 0, 0.14),
+            0 24px 48px rgba(0, 0, 0, 0.10),
+            inset 0 2px 2px rgba(255, 255, 255, 0.8),
+            inset 0 -3px 8px rgba(0, 0, 0, 0.12),
+            inset 3px 3px 8px rgba(0, 0, 0, 0.10),
+            inset -3px 3px 8px rgba(0, 0, 0, 0.09),
+            inset 0 -1px 2px rgba(0, 0, 0, 0.08)
+          `
+          : `
+            0 3px 6px rgba(0, 0, 0, 0.12),
+            0 8px 16px rgba(0, 0, 0, 0.10),
+            0 16px 32px rgba(0, 0, 0, 0.08),
+            0 1px 2px rgba(0, 0, 0, 0.12),
+            inset 0 2px 1px rgba(255, 255, 255, 0.7),
+            inset 0 -2px 6px rgba(0, 0, 0, 0.10),
+            inset 2px 2px 8px rgba(0, 0, 0, 0.08),
+            inset -2px 2px 8px rgba(0, 0, 0, 0.07),
+            inset 0 0 1px rgba(0, 0, 0, 0.15)
+          `,
         x: pillShift,
         overflow: 'hidden',
+        transition: 'box-shadow 0.3s ease-out',
       }}
     >
-      {/* Top edge bright highlight */}
+      {/* Primary top edge ridge - ultra bright */}
       <div 
         className="absolute inset-x-0 top-0 rounded-t-full pointer-events-none"
         style={{
-          height: '1px',
-          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 8%, rgba(255, 255, 255, 0.85) 92%, rgba(255, 255, 255, 0) 100%)',
+          height: '2px',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 5%, rgba(255, 255, 255, 1) 15%, rgba(255, 255, 255, 1) 85%, rgba(255, 255, 255, 0.95) 95%, rgba(255, 255, 255, 0) 100%)',
+          filter: 'blur(0.3px)',
         }}
       />
       
-      {/* Diffuse top-left light source */}
+      {/* Top hemisphere light catch */}
+      <div 
+        className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
+        style={{
+          height: '55%',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.25) 30%, rgba(255, 255, 255, 0.10) 60%, rgba(255, 255, 255, 0) 100%)',
+        }}
+      />
+      
+      {/* Directional light - top left */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 25%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 70%)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.20) 20%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0) 65%)',
         }}
       />
       
-      {/* Reflective gloss line */}
+      {/* Premium gloss reflection - main */}
       <div 
         className="absolute rounded-full pointer-events-none"
         style={{
-          left: '20%',
-          top: '18%',
-          width: '110px',
-          height: '11px',
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 85%)',
-          filter: 'blur(3.5px)',
-          transform: 'rotate(-10deg)',
+          left: '18%',
+          top: '16%',
+          width: '140px',
+          height: '14px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.70) 0%, rgba(255, 255, 255, 0.35) 40%, rgba(255, 255, 255, 0.10) 70%, rgba(255, 255, 255, 0) 100%)',
+          filter: 'blur(4px)',
+          transform: 'rotate(-12deg)',
         }}
       />
       
-      {/* Bottom curvature falloff */}
+      {/* Secondary gloss accent */}
+      <div 
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          right: '22%',
+          top: '20%',
+          width: '80px',
+          height: '10px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.15) 60%, rgba(255, 255, 255, 0) 100%)',
+          filter: 'blur(3px)',
+          transform: 'rotate(8deg)',
+        }}
+      />
+      
+      {/* Left edge illumination */}
+      <div 
+        className="absolute inset-y-0 left-0 rounded-l-full pointer-events-none"
+        style={{
+          width: '45%',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0) 100%)',
+        }}
+      />
+      
+      {/* Right edge shadow */}
+      <div 
+        className="absolute inset-y-0 right-0 rounded-r-full pointer-events-none"
+        style={{
+          width: '45%',
+          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(0, 0, 0, 0.02) 60%, rgba(0, 0, 0, 0) 100%)',
+        }}
+      />
+      
+      {/* Bottom curvature - deep shadow */}
       <div 
         className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
         style={{
-          height: '40%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, 0) 100%)',
+          height: '50%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.08) 25%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0) 100%)',
         }}
       />
 
-      {/* Subtle inner radiance */}
+      {/* Bottom edge contact shadow */}
+      <div 
+        className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
+        style={{
+          height: '20%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0) 100%)',
+          filter: 'blur(2px)',
+        }}
+      />
+
+      {/* Inner diffuse glow */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 25px rgba(255, 255, 255, 0.18)',
-          opacity: 0.6,
+          boxShadow: 'inset 0 0 40px rgba(255, 255, 255, 0.22)',
+          opacity: 0.7,
+        }}
+      />
+      
+      {/* Micro edge definition */}
+      <div 
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.10)',
         }}
       />
 
@@ -185,18 +269,22 @@ export const PillBase: React.FC = () => {
             <span
               style={{
                 fontSize: '15.5px',
-                fontWeight: 650,
-                color: '#2a2a2a',
-                letterSpacing: '0.4px',
+                fontWeight: 680,
+                color: '#1a1a1a',
+                letterSpacing: '0.45px',
                 whiteSpace: 'nowrap',
                 fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
+                transform: 'translateY(-1.5px)',
                 textShadow: `
-                  inset 0 1px 1px rgba(0, 0, 0, 0.28),
-                  0 -1px 1px rgba(255, 255, 255, 0.7),
-                  0 1px 0 rgba(255, 255, 255, 0.5),
-                  0 2px 4px rgba(0, 0, 0, 0.18)
+                  0 1px 0 rgba(0, 0, 0, 0.45),
+                  0 2px 1px rgba(0, 0, 0, 0.30),
+                  0 -1px 0 rgba(255, 255, 255, 0.9),
+                  0 -2px 3px rgba(255, 255, 255, 0.7),
+                  1px 1px 2px rgba(0, 0, 0, 0.25),
+                  -1px 1px 2px rgba(0, 0, 0, 0.22),
+                  0 3px 6px rgba(0, 0, 0, 0.18)
                 `,
               }}
             >
@@ -226,10 +314,10 @@ export const PillBase: React.FC = () => {
                   className="relative cursor-pointer transition-all duration-200"
                   style={{
                     fontSize: isActive ? '15.5px' : '15px',
-                    fontWeight: isActive ? 650 : 500,
-                    color: isActive ? '#2a2a2a' : '#5a5a5a',
+                    fontWeight: isActive ? 680 : 510,
+                    color: isActive ? '#1a1a1a' : '#656565',
                     textDecoration: 'none',
-                    letterSpacing: '0.4px',
+                    letterSpacing: '0.45px',
                     background: 'transparent',
                     border: 'none',
                     padding: '10px 16px',
@@ -238,29 +326,52 @@ export const PillBase: React.FC = () => {
                     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
                     WebkitFontSmoothing: 'antialiased',
                     MozOsxFontSmoothing: 'grayscale',
-                    transform: isActive ? 'translateY(-1px)' : 'translateY(0)',
+                    transform: isActive ? 'translateY(-1.5px)' : 'translateY(0)',
                     textShadow: isActive 
                       ? `
-                        inset 0 1px 1px rgba(0, 0, 0, 0.28),
-                        0 -1px 1px rgba(255, 255, 255, 0.7),
-                        0 1px 0 rgba(255, 255, 255, 0.5),
-                        0 2px 4px rgba(0, 0, 0, 0.18)
+                        0 1px 0 rgba(0, 0, 0, 0.45),
+                        0 2px 1px rgba(0, 0, 0, 0.30),
+                        0 -1px 0 rgba(255, 255, 255, 0.9),
+                        0 -2px 3px rgba(255, 255, 255, 0.7),
+                        1px 1px 2px rgba(0, 0, 0, 0.25),
+                        -1px 1px 2px rgba(0, 0, 0, 0.22),
+                        0 3px 6px rgba(0, 0, 0, 0.18)
                       `
                       : `
-                        inset 0 1px 1px rgba(0, 0, 0, 0.20),
-                        0 -1px 1px rgba(255, 255, 255, 0.6),
-                        0 1px 0 rgba(255, 255, 255, 0.4),
-                        0 2px 3px rgba(0, 0, 0, 0.12)
+                        0 1px 0 rgba(0, 0, 0, 0.28),
+                        0 2px 1px rgba(0, 0, 0, 0.15),
+                        0 -1px 0 rgba(255, 255, 255, 0.75),
+                        0 -2px 2px rgba(255, 255, 255, 0.5),
+                        1px 1px 1px rgba(0, 0, 0, 0.15),
+                        0 2px 4px rgba(0, 0, 0, 0.12)
                       `,
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.color = '#484848'
+                      e.currentTarget.style.color = '#3a3a3a'
+                      e.currentTarget.style.transform = 'translateY(-0.5px)'
+                      e.currentTarget.style.textShadow = `
+                        0 1px 0 rgba(0, 0, 0, 0.35),
+                        0 2px 1px rgba(0, 0, 0, 0.22),
+                        0 -1px 0 rgba(255, 255, 255, 0.82),
+                        0 -2px 2.5px rgba(255, 255, 255, 0.6),
+                        1px 1px 1.5px rgba(0, 0, 0, 0.18),
+                        0 2px 4.5px rgba(0, 0, 0, 0.15)
+                      `
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.color = '#5a5a5a'
+                      e.currentTarget.style.color = '#656565'
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.textShadow = `
+                        0 1px 0 rgba(0, 0, 0, 0.28),
+                        0 2px 1px rgba(0, 0, 0, 0.15),
+                        0 -1px 0 rgba(255, 255, 255, 0.75),
+                        0 -2px 2px rgba(255, 255, 255, 0.5),
+                        1px 1px 1px rgba(0, 0, 0, 0.15),
+                        0 2px 4px rgba(0, 0, 0, 0.12)
+                      `
                     }
                   }}
                 >
