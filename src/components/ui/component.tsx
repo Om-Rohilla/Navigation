@@ -158,7 +158,7 @@ export const PillBase: React.FC = () => {
               className="relative cursor-pointer transition-all duration-200"
               style={{
                 fontSize: '15px',
-                fontWeight: isActive ? 700 : 600,
+                fontWeight: isActive ? 600 : 500,
                 color: '#464646',
                 textDecoration: 'none',
                 letterSpacing: '0.4px',
