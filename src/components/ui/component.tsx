@@ -172,65 +172,6 @@ export const PillBase: React.FC = () => {
           fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, sans-serif',
         }}
       >
-        {/* Animated selector capsule */}
-        <motion.div
-          className="absolute rounded-xl pointer-events-none overflow-hidden"
-          style={{
-            height: '40px',
-            width: capsuleWidth,
-            x: capsuleX,
-            top: '8px',
-            background: 'linear-gradient(180deg, #ffffff 0%, #f9f9f9 50%, #f2f2f2 100%)',
-            boxShadow: `
-              0 2px 4px rgba(0, 0, 0, 0.05),
-              0 4px 8px rgba(0, 0, 0, 0.07),
-              0 8px 16px rgba(0, 0, 0, 0.09),
-              inset 0 1px 2px rgba(255, 255, 255, 1),
-              inset 0 -2px 3px rgba(0, 0, 0, 0.06),
-              inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)
-            `,
-          }}
-        >
-          {/* Capsule top highlight */}
-          <div
-            className="absolute inset-x-0 top-0 rounded-t-xl"
-            style={{
-              height: '50%',
-              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%)',
-            }}
-          />
-          
-          {/* Capsule intense top shine */}
-          <div
-            className="absolute inset-x-0 top-0 rounded-t-xl"
-            style={{
-              height: '20%',
-              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)',
-              filter: 'blur(0.5px)',
-            }}
-          />
-          
-          {/* Capsule bottom shadow */}
-          <div
-            className="absolute inset-x-0 bottom-0 rounded-b-xl"
-            style={{
-              height: '35%',
-              background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 100%)',
-            }}
-          />
-
-          {/* Capsule specular highlight */}
-          <div
-            className="absolute left-6 top-1.5 rounded-full"
-            style={{
-              width: '50px',
-              height: '10px',
-              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%)',
-              filter: 'blur(3px)',
-            }}
-          />
-        </motion.div>
-
         {/* Navigation items */}
         {navItems.map((item, index) => {
           const isActive = activeIndex === index
