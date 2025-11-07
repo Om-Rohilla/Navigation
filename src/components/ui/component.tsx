@@ -69,98 +69,122 @@ export const PillBase: React.FC = () => {
 
   return (
     <motion.nav
-      className="relative rounded-full overflow-hidden"
+      className="relative rounded-full"
       style={{
         width: '580px',
         height: '56px',
         background: `
-          linear-gradient(145deg, #fafafa 0%, #f4f4f6 25%, #f0f0f2 50%, #ececee 75%, #f2f2f4 100%)
+          linear-gradient(135deg, #f8f8f8 0%, #f5f5f7 30%, #f0f0f2 50%, #ecedef 70%, #f2f2f4 100%)
         `,
         boxShadow: `
-          0 1px 2px rgba(0, 0, 0, 0.03),
-          0 2px 6px rgba(0, 0, 0, 0.04),
-          0 6px 12px rgba(0, 0, 0, 0.06),
-          0 12px 24px rgba(0, 0, 0, 0.08),
-          0 24px 48px rgba(0, 0, 0, 0.1),
-          inset 0 2px 3px rgba(255, 255, 255, 0.95),
-          inset 0 -2px 4px rgba(0, 0, 0, 0.06),
-          inset 0 0 0 0.5px rgba(255, 255, 255, 0.4)
+          0 4px 8px rgba(0, 0, 0, 0.15),
+          0 10px 40px rgba(0, 0, 0, 0.05),
+          0 1px 2px rgba(0, 0, 0, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          inset 0 2px 4px rgba(255, 255, 255, 0.6),
+          inset 0 -1px 3px rgba(0, 0, 0, 0.08),
+          inset 0 -2px 6px rgba(0, 0, 0, 0.04)
         `,
         x: pillShift,
+        overflow: 'hidden',
       }}
     >
-      {/* Glossy top highlight - primary light source */}
+      {/* Primary top light reflection - simulates top-left light source */}
       <div 
         className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
         style={{
-          height: '55%',
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0) 100%)',
+          height: '60%',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.5) 30%, rgba(255, 255, 255, 0.2) 60%, rgba(255, 255, 255, 0) 100%)',
         }}
       />
       
-      {/* Intense top edge shine */}
+      {/* Intense top edge shine - crisp highlight */}
       <div 
-        className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
+        className="absolute inset-x-0 top-0 rounded-t-full pointer-events-none"
         style={{
-          height: '20%',
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%)',
+          height: '3px',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 15%, rgba(255, 255, 255, 0.95) 85%, rgba(255, 255, 255, 0) 100%)',
           filter: 'blur(0.5px)',
         }}
       />
       
-      {/* Bottom shadow for depth */}
-      <div 
-        className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
-        style={{
-          height: '40%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0) 100%)',
-        }}
-      />
-
-      {/* Ambient occlusion shadow at bottom edge */}
-      <div 
-        className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
-        style={{
-          height: '15%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%)',
-          filter: 'blur(1px)',
-        }}
-      />
-
-      {/* Left-side subtle highlight for dimension */}
-      <div 
-        className="absolute inset-y-0 left-0 rounded-full pointer-events-none"
-        style={{
-          width: '30%',
-          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%)',
-        }}
-      />
-
-      {/* Right-side subtle shadow for dimension */}
-      <div 
-        className="absolute inset-y-0 right-0 rounded-full pointer-events-none"
-        style={{
-          width: '30%',
-          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 100%)',
-        }}
-      />
-
-      {/* Outer edge definition with subtle border */}
+      {/* Semi-matte glass overlay */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 0 1px rgba(0, 0, 0, 0.04)',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.02) 100%)',
+        }}
+      />
+      
+      {/* Bottom curvature shadow */}
+      <div 
+        className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
+        style={{
+          height: '45%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.03) 40%, rgba(0, 0, 0, 0) 100%)',
         }}
       />
 
-      {/* Specular highlight - creates glass-like quality */}
+      {/* Contact shadow at bottom edge */}
       <div 
-        className="absolute left-12 top-2 rounded-full pointer-events-none"
+        className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
         style={{
-          width: '120px',
-          height: '12px',
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%)',
+          height: '12%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 100%)',
+          filter: 'blur(2px)',
+        }}
+      />
+
+      {/* Left-side illumination from light source */}
+      <div 
+        className="absolute inset-y-0 left-0 rounded-l-full pointer-events-none"
+        style={{
+          width: '35%',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0) 100%)',
+        }}
+      />
+
+      {/* Right-side shadow for depth */}
+      <div 
+        className="absolute inset-y-0 right-0 rounded-r-full pointer-events-none"
+        style={{
+          width: '35%',
+          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.015) 50%, rgba(0, 0, 0, 0) 100%)',
+        }}
+      />
+
+      {/* Specular highlight - glass reflection */}
+      <div 
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          left: '18%',
+          top: '15%',
+          width: '140px',
+          height: '16px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0) 70%)',
+          filter: 'blur(4px)',
+          transform: 'rotate(-8deg)',
+        }}
+      />
+      
+      {/* Secondary smaller specular */}
+      <div 
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          right: '25%',
+          top: '20%',
+          width: '60px',
+          height: '10px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%)',
           filter: 'blur(3px)',
+        }}
+      />
+
+      {/* Subtle outer rim shadow */}
+      <div 
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.06)',
         }}
       />
 
@@ -185,24 +209,29 @@ export const PillBase: React.FC = () => {
               style={{
                 fontSize: '15px',
                 fontWeight: isActive ? 600 : 500,
-                color: isActive ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.55)',
+                color: isActive ? '#4a4a4a' : '#6b6b6b',
                 textDecoration: 'none',
-                letterSpacing: '-0.01em',
+                letterSpacing: '-0.015em',
                 background: 'transparent',
                 border: 'none',
                 padding: '10px 20px',
                 outline: 'none',
                 zIndex: 20,
                 whiteSpace: 'nowrap',
+                textShadow: isActive 
+                  ? '0 1px 1px rgba(255, 255, 255, 0.8), 0 -0.5px 0.5px rgba(0, 0, 0, 0.1)' 
+                  : '0 1px 1px rgba(255, 255, 255, 0.6), 0 -0.5px 0.5px rgba(0, 0, 0, 0.08)',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.75)'
+                  e.currentTarget.style.color = '#555555'
+                  e.currentTarget.style.textShadow = '0 1px 1px rgba(255, 255, 255, 0.7), 0 -0.5px 0.5px rgba(0, 0, 0, 0.09)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.55)'
+                  e.currentTarget.style.color = '#6b6b6b'
+                  e.currentTarget.style.textShadow = '0 1px 1px rgba(255, 255, 255, 0.6), 0 -0.5px 0.5px rgba(0, 0, 0, 0.08)'
                 }
               }}
             >
