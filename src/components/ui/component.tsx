@@ -171,47 +171,54 @@ export const PillBase: React.FC = () => {
       <div 
         className="absolute rounded-full pointer-events-none"
         style={{
-          left: '18%',
+          left: expanded ? '18%' : '15%',
           top: '16%',
-          width: '140px',
+          width: expanded ? '140px' : '60px',
           height: '14px',
           background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.70) 0%, rgba(255, 255, 255, 0.35) 40%, rgba(255, 255, 255, 0.10) 70%, rgba(255, 255, 255, 0) 100%)',
           filter: 'blur(4px)',
           transform: 'rotate(-12deg)',
+          transition: 'all 0.3s ease',
         }}
       />
       
-      {/* Secondary gloss accent */}
-      <div 
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          right: '22%',
-          top: '20%',
-          width: '80px',
-          height: '10px',
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.15) 60%, rgba(255, 255, 255, 0) 100%)',
-          filter: 'blur(3px)',
-          transform: 'rotate(8deg)',
-        }}
-      />
+      {/* Secondary gloss accent - only show when expanded */}
+      {expanded && (
+        <div 
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            right: '22%',
+            top: '20%',
+            width: '80px',
+            height: '10px',
+            background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.15) 60%, rgba(255, 255, 255, 0) 100%)',
+            filter: 'blur(3px)',
+            transform: 'rotate(8deg)',
+          }}
+        />
+      )}
       
-      {/* Left edge illumination */}
-      <div 
-        className="absolute inset-y-0 left-0 rounded-l-full pointer-events-none"
-        style={{
-          width: '45%',
-          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0) 100%)',
-        }}
-      />
+      {/* Left edge illumination - only show when expanded */}
+      {expanded && (
+        <div 
+          className="absolute inset-y-0 left-0 rounded-l-full pointer-events-none"
+          style={{
+            width: '35%',
+            background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.10) 40%, rgba(255, 255, 255, 0.03) 70%, rgba(255, 255, 255, 0) 100%)',
+          }}
+        />
+      )}
       
-      {/* Right edge shadow */}
-      <div 
-        className="absolute inset-y-0 right-0 rounded-r-full pointer-events-none"
-        style={{
-          width: '45%',
-          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.06) 30%, rgba(0, 0, 0, 0.02) 60%, rgba(0, 0, 0, 0) 100%)',
-        }}
-      />
+      {/* Right edge shadow - only show when expanded */}
+      {expanded && (
+        <div 
+          className="absolute inset-y-0 right-0 rounded-r-full pointer-events-none"
+          style={{
+            width: '35%',
+            background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.05) 40%, rgba(0, 0, 0, 0.02) 70%, rgba(0, 0, 0, 0) 100%)',
+          }}
+        />
+      )}
       
       {/* Bottom curvature - deep shadow */}
       <div 
