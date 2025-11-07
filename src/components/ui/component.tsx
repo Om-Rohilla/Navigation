@@ -3,75 +3,103 @@ import { motion, useSpring } from 'framer-motion'
 
 interface NavItem {
   label: string
+  id: string
 }
 
 /**
- * 3D Pill Navigation Bar
- * A premium 3D navigation component with sliding selector capsule and synchronized motion
+ * 3D Adaptive Navigation Pill
+ * Smart navigation with scroll detection and hover expansion
  */
 export const PillBase: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [capsuleProps, setCapsuleProps] = useState({ width: 0, left: 0 })
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const [activeSection, setActiveSection] = useState('home')
+  const [expanded, setExpanded] = useState(false)
+  const [hovering, setHovering] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   const navItems: NavItem[] = [
-    { label: 'Home' },
-    { label: 'Problem' },
-    { label: 'Solution' },
-    { label: 'Contact' },
+    { label: 'Home', id: 'home' },
+    { label: 'Problem', id: 'problem' },
+    { label: 'Solution', id: 'solution' },
+    { label: 'Contact', id: 'contact' },
   ]
 
-  // Spring animations for smooth, bouncy motion
-  const capsuleX = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
-  const capsuleWidth = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+  // Spring animations for smooth motion
+  const pillWidth = useSpring(140, { stiffness: 220, damping: 25, mass: 1 })
   const pillShift = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
 
-  // Update capsule position when active item changes or window resizes
+  // Scroll detection - track which section is visible
   useEffect(() => {
-    const updateCapsulePosition = () => {
-      const activeElement = itemRefs.current[activeIndex]
-      const container = containerRef.current
-      
-      if (activeElement && container) {
-        const containerRect = container.getBoundingClientRect()
-        const buttonRect = activeElement.getBoundingClientRect()
-        
-        // Calculate position relative to container
-        const left = buttonRect.left - containerRect.left
-        const width = buttonRect.width
-        
-        setCapsuleProps({ width, left })
-        capsuleX.set(left)
-        capsuleWidth.set(width)
-        
-        // Calculate subtle pill shift based on direction from center
-        const center = (navItems.length - 1) / 2
-        const shift = (activeIndex - center) * 1.5 // Subtle 1.5px per item from center
-        pillShift.set(shift)
-      }
+    const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean) as HTMLElement[]
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
     }
 
-    // Update immediately
-    updateCapsulePosition()
-    
-    // Update on window resize
-    window.addEventListener('resize', updateCapsulePosition)
-    
-    // Small delay to ensure DOM is fully rendered
-    const timer = setTimeout(updateCapsulePosition, 50)
-    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
+        }
+      })
+    }, observerOptions)
+
+    sections.forEach(section => observer.observe(section))
+
     return () => {
-      window.removeEventListener('resize', updateCapsulePosition)
-      clearTimeout(timer)
+      sections.forEach(section => observer.unobserve(section))
     }
-  }, [activeIndex, capsuleX, capsuleWidth, pillShift, navItems.length])
+  }, [])
+
+  // Handle hover expansion
+  useEffect(() => {
+    if (hovering) {
+      setExpanded(true)
+      pillWidth.set(580)
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+    } else {
+      hoverTimeoutRef.current = setTimeout(() => {
+        setExpanded(false)
+        pillWidth.set(140)
+      }, 600)
+    }
+
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
+      }
+    }
+  }, [hovering, pillWidth])
+
+  const handleMouseEnter = () => {
+    setHovering(true)
+  }
+
+  const handleMouseLeave = () => {
+    setHovering(false)
+  }
+
+  const handleSectionClick = (sectionId: string) => {
+    setActiveSection(sectionId)
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const activeItem = navItems.find(item => item.id === activeSection)
 
   return (
     <motion.nav
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="relative rounded-full"
       style={{
-        width: '580px',
+        width: pillWidth,
         height: '56px',
         background: `
           linear-gradient(145deg, #f9f9fb 0%, #f3f3f5 25%, #ededef 50%, #e7e8ea 75%, #e1e2e5 100%)
@@ -141,81 +169,108 @@ export const PillBase: React.FC = () => {
       {/* Navigation items container */}
       <div 
         ref={containerRef}
-        className="relative z-10 h-full flex items-center justify-evenly px-8"
+        className="relative z-10 h-full flex items-center justify-center px-6"
         style={{
-          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, sans-serif',
+          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro", Poppins, sans-serif',
         }}
       >
-        {/* Navigation items */}
-        {navItems.map((item, index) => {
-          const isActive = activeIndex === index
-          
-          return (
-            <button
-              key={index}
-              ref={(el) => (itemRefs.current[index] = el)}
-              onClick={() => setActiveIndex(index)}
-              className="relative cursor-pointer transition-all duration-200"
+        {/* Collapsed state - show only active section */}
+        {!expanded && activeItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex items-center"
+          >
+            <span
               style={{
-                fontSize: isActive ? '15.5px' : '15px',
-                fontWeight: isActive ? 650 : 500,
-                color: isActive ? '#2a2a2a' : '#5a5a5a',
-                textDecoration: 'none',
+                fontSize: '15.5px',
+                fontWeight: 650,
+                color: '#2a2a2a',
                 letterSpacing: '0.4px',
-                background: 'transparent',
-                border: 'none',
-                padding: '10px 22px',
-                outline: 'none',
-                zIndex: 20,
                 whiteSpace: 'nowrap',
                 fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                transform: isActive ? 'translateY(-1px)' : 'translateY(0)',
-                // Engraved effect
-                textShadow: isActive 
-                  ? `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.28),
-                    0 -1px 1px rgba(255, 255, 255, 0.7),
-                    0 1px 0 rgba(255, 255, 255, 0.5),
-                    0 2px 4px rgba(0, 0, 0, 0.18)
-                  `
-                  : `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.20),
-                    0 -1px 1px rgba(255, 255, 255, 0.6),
-                    0 1px 0 rgba(255, 255, 255, 0.4),
-                    0 2px 3px rgba(0, 0, 0, 0.12)
-                  `,
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.color = '#484848'
-                  e.currentTarget.style.textShadow = `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
-                    0 -1px 1px rgba(255, 255, 255, 0.65),
-                    0 1px 0 rgba(255, 255, 255, 0.45),
-                    0 2px 3.5px rgba(0, 0, 0, 0.14)
-                  `
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.color = '#5a5a5a'
-                  e.currentTarget.style.textShadow = `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.20),
-                    0 -1px 1px rgba(255, 255, 255, 0.6),
-                    0 1px 0 rgba(255, 255, 255, 0.4),
-                    0 2px 3px rgba(0, 0, 0, 0.12)
-                  `
-                }
+                textShadow: `
+                  inset 0 1px 1px rgba(0, 0, 0, 0.28),
+                  0 -1px 1px rgba(255, 255, 255, 0.7),
+                  0 1px 0 rgba(255, 255, 255, 0.5),
+                  0 2px 4px rgba(0, 0, 0, 0.18)
+                `,
               }}
             >
-              {item.label}
-            </button>
-          )
-        })}
+              {activeItem.label}
+            </span>
+          </motion.div>
+        )}
+
+        {/* Expanded state - show all sections with stagger */}
+        {expanded && (
+          <div className="flex items-center justify-evenly w-full">
+            {navItems.map((item, index) => {
+              const isActive = item.id === activeSection
+              
+              return (
+                <motion.button
+                  key={item.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ 
+                    delay: index * 0.08,
+                    duration: 0.25,
+                    ease: 'easeOut'
+                  }}
+                  onClick={() => handleSectionClick(item.id)}
+                  className="relative cursor-pointer transition-all duration-200"
+                  style={{
+                    fontSize: isActive ? '15.5px' : '15px',
+                    fontWeight: isActive ? 650 : 500,
+                    color: isActive ? '#2a2a2a' : '#5a5a5a',
+                    textDecoration: 'none',
+                    letterSpacing: '0.4px',
+                    background: 'transparent',
+                    border: 'none',
+                    padding: '10px 16px',
+                    outline: 'none',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
+                    WebkitFontSmoothing: 'antialiased',
+                    MozOsxFontSmoothing: 'grayscale',
+                    transform: isActive ? 'translateY(-1px)' : 'translateY(0)',
+                    textShadow: isActive 
+                      ? `
+                        inset 0 1px 1px rgba(0, 0, 0, 0.28),
+                        0 -1px 1px rgba(255, 255, 255, 0.7),
+                        0 1px 0 rgba(255, 255, 255, 0.5),
+                        0 2px 4px rgba(0, 0, 0, 0.18)
+                      `
+                      : `
+                        inset 0 1px 1px rgba(0, 0, 0, 0.20),
+                        0 -1px 1px rgba(255, 255, 255, 0.6),
+                        0 1px 0 rgba(255, 255, 255, 0.4),
+                        0 2px 3px rgba(0, 0, 0, 0.12)
+                      `,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = '#484848'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = '#5a5a5a'
+                    }
+                  }}
+                >
+                  {item.label}
+                </motion.button>
+              )
+            })}
+          </div>
+        )}
       </div>
     </motion.nav>
   )
 }
-
