@@ -9,7 +9,7 @@ export const PillBase: React.FC = () => {
     <div
       className="relative rounded-full"
       style={{
-        width: '280px',
+        width: '420px',
         height: '50px',
         background: 'linear-gradient(180deg, #f8f8f8 0%, #f5f5f7 50%, #f2f2f4 100%)',
         boxShadow: `
