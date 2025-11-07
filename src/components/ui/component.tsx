@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { motion, useSpring } from 'framer-motion'
 
 interface NavItem {
   label: string
@@ -6,9 +7,13 @@ interface NavItem {
 
 /**
  * 3D Pill Navigation Bar
- * A premium 3D navigation component with clean typography and perfect spacing
+ * A premium 3D navigation component with sliding selector capsule and synchronized motion
  */
 export const PillBase: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [capsuleProps, setCapsuleProps] = useState({ width: 0, left: 0 })
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
+  
   const navItems: NavItem[] = [
     { label: 'Home' },
     { label: 'Problem' },
@@ -16,8 +21,27 @@ export const PillBase: React.FC = () => {
     { label: 'Contact' },
   ]
 
+  // Spring animations for smooth, bouncy motion
+  const capsuleX = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+  const pillShift = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+
+  // Update capsule position when active item changes
+  useEffect(() => {
+    const activeElement = itemRefs.current[activeIndex]
+    if (activeElement) {
+      const { offsetLeft, offsetWidth } = activeElement
+      setCapsuleProps({ width: offsetWidth, left: offsetLeft })
+      capsuleX.set(offsetLeft)
+      
+      // Calculate subtle pill shift based on direction
+      const center = 2 // Number of items / 2
+      const shift = (activeIndex - center + 0.5) * 1.5 // Subtle 1.5px per item from center
+      pillShift.set(shift)
+    }
+  }, [activeIndex, capsuleX, pillShift])
+
   return (
-    <nav
+    <motion.nav
       className="relative rounded-full overflow-hidden"
       style={{
         width: '580px',
@@ -35,6 +59,7 @@ export const PillBase: React.FC = () => {
           inset 0 -2px 4px rgba(0, 0, 0, 0.06),
           inset 0 0 0 0.5px rgba(255, 255, 255, 0.4)
         `,
+        x: pillShift,
       }}
     >
       {/* Glossy top highlight - primary light source */}
@@ -114,101 +139,97 @@ export const PillBase: React.FC = () => {
 
       {/* Navigation items container */}
       <div 
-        className="relative z-10 h-full flex items-center justify-evenly px-6"
+        className="relative z-10 h-full flex items-center justify-evenly px-8"
         style={{
           fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, sans-serif',
         }}
       >
+        {/* Animated selector capsule */}
+        <motion.div
+          className="absolute rounded-xl pointer-events-none"
+          style={{
+            height: '40px',
+            width: capsuleProps.width,
+            x: capsuleX,
+            top: '8px',
+            background: 'linear-gradient(180deg, #ffffff 0%, #f8f8f8 50%, #f0f0f0 100%)',
+            boxShadow: `
+              0 2px 4px rgba(0, 0, 0, 0.04),
+              0 4px 8px rgba(0, 0, 0, 0.06),
+              0 8px 16px rgba(0, 0, 0, 0.08),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95),
+              inset 0 -2px 3px rgba(0, 0, 0, 0.05),
+              inset 0 0 0 0.5px rgba(255, 255, 255, 0.5)
+            `,
+          }}
+        >
+          {/* Capsule top highlight */}
+          <div
+            className="absolute inset-x-0 top-0 rounded-t-xl"
+            style={{
+              height: '50%',
+              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%)',
+            }}
+          />
+          
+          {/* Capsule bottom shadow */}
+          <div
+            className="absolute inset-x-0 bottom-0 rounded-b-xl"
+            style={{
+              height: '35%',
+              background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%)',
+            }}
+          />
+
+          {/* Capsule specular highlight */}
+          <div
+            className="absolute left-4 top-1 rounded-full"
+            style={{
+              width: '40px',
+              height: '8px',
+              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%)',
+              filter: 'blur(2px)',
+            }}
+          />
+        </motion.div>
+
+        {/* Navigation items */}
         {navItems.map((item, index) => {
-          const isActive = index === 0 // "Home" is active by default for visual demo
+          const isActive = activeIndex === index
           
           return (
-            <a
+            <button
               key={index}
-              href="#"
-              className="relative group cursor-pointer transition-all duration-200"
+              ref={(el) => (itemRefs.current[index] = el)}
+              onClick={() => setActiveIndex(index)}
+              className="relative cursor-pointer transition-all duration-200 px-6 py-2"
               style={{
+                fontSize: '15px',
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.55)',
                 textDecoration: 'none',
+                letterSpacing: '-0.01em',
+                background: 'transparent',
+                border: 'none',
+                zIndex: 20,
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.75)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.55)'
+                }
               }}
             >
-              {/* Capsule container */}
-              <div
-                className="relative px-6 py-2.5 rounded-xl transition-all duration-200"
-                style={{
-                  background: isActive 
-                    ? 'linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%)'
-                    : 'linear-gradient(180deg, #f9f9f9 0%, #ececec 100%)',
-                  boxShadow: isActive
-                    ? `
-                      0 2px 4px rgba(0, 0, 0, 0.06),
-                      0 4px 8px rgba(0, 0, 0, 0.08),
-                      inset 0 1px 2px rgba(255, 255, 255, 0.9),
-                      inset 0 -1px 2px rgba(0, 0, 0, 0.04)
-                    `
-                    : `
-                      0 1px 2px rgba(0, 0, 0, 0.04),
-                      0 2px 4px rgba(0, 0, 0, 0.06),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.6),
-                      inset 0 -1px 1px rgba(0, 0, 0, 0.03)
-                    `,
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'linear-gradient(180deg, #fdfdfd 0%, #f0f0f0 100%)'
-                    e.currentTarget.style.boxShadow = `
-                      0 2px 4px rgba(0, 0, 0, 0.05),
-                      0 3px 6px rgba(0, 0, 0, 0.07),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.8),
-                      inset 0 -1px 2px rgba(0, 0, 0, 0.04)
-                    `
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'linear-gradient(180deg, #f9f9f9 0%, #ececec 100%)'
-                    e.currentTarget.style.boxShadow = `
-                      0 1px 2px rgba(0, 0, 0, 0.04),
-                      0 2px 4px rgba(0, 0, 0, 0.06),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.6),
-                      inset 0 -1px 1px rgba(0, 0, 0, 0.03)
-                    `
-                  }
-                }}
-              >
-                {/* Top highlight on capsule */}
-                <div
-                  className="absolute inset-x-0 top-0 rounded-t-xl pointer-events-none"
-                  style={{
-                    height: '50%',
-                    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%)',
-                  }}
-                />
-
-                {/* Text label */}
-                <span
-                  className="relative z-10 block transition-colors duration-200"
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: isActive ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.60)',
-                    letterSpacing: '-0.01em',
-                    whiteSpace: 'nowrap',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'rgba(0, 0, 0, 0.90)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = isActive ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.60)'
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
-            </a>
+              {item.label}
+            </button>
           )
         })}
       </div>
-    </nav>
+    </motion.nav>
   )
 }
 
