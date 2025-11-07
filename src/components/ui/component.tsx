@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { motion, useSpring } from 'framer-motion'
+import { motion, useSpring, AnimatePresence } from 'framer-motion'
 
 interface NavItem {
   label: string
@@ -14,8 +14,10 @@ export const PillBase: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home')
   const [expanded, setExpanded] = useState(false)
   const [hovering, setHovering] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const prevSectionRef = useRef('home')
   
   const navItems: NavItem[] = [
     { label: 'Home', id: 'home' },
@@ -40,8 +42,16 @@ export const PillBase: React.FC = () => {
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && entry.target.id !== prevSectionRef.current) {
+          // Trigger transition state
+          setIsTransitioning(true)
+          prevSectionRef.current = entry.target.id
           setActiveSection(entry.target.id)
+          
+          // Reset transition state after animation completes
+          setTimeout(() => {
+            setIsTransitioning(false)
+          }, 400)
         }
       })
     }, observerOptions)
@@ -124,6 +134,19 @@ export const PillBase: React.FC = () => {
             inset 3px 3px 8px rgba(0, 0, 0, 0.10),
             inset -3px 3px 8px rgba(0, 0, 0, 0.09),
             inset 0 -1px 2px rgba(0, 0, 0, 0.08)
+          `
+          : isTransitioning
+          ? `
+            0 3px 6px rgba(0, 0, 0, 0.10),
+            0 8px 16px rgba(0, 0, 0, 0.08),
+            0 16px 32px rgba(0, 0, 0, 0.06),
+            0 1px 2px rgba(0, 0, 0, 0.10),
+            inset 0 2px 1px rgba(255, 255, 255, 0.85),
+            inset 0 -2px 6px rgba(0, 0, 0, 0.08),
+            inset 2px 2px 8px rgba(0, 0, 0, 0.06),
+            inset -2px 2px 8px rgba(0, 0, 0, 0.05),
+            inset 0 0 1px rgba(0, 0, 0, 0.12),
+            inset 0 0 20px rgba(255, 255, 255, 0.15)
           `
           : `
             0 3px 6px rgba(0, 0, 0, 0.12),
@@ -258,36 +281,42 @@ export const PillBase: React.FC = () => {
           fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro", Poppins, sans-serif',
         }}
       >
-        {/* Collapsed state - show only active section */}
-        {!expanded && activeItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex items-center"
-          >
-            <span
-              style={{
-                fontSize: '15.5px',
-                fontWeight: 680,
-                color: '#1a1a1a',
-                letterSpacing: '0.45px',
-                whiteSpace: 'nowrap',
-                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
-                WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale',
-                transform: 'translateY(-1.5px)',
-                textShadow: `
-                  0 1px 0 rgba(0, 0, 0, 0.35),
-                  0 -1px 0 rgba(255, 255, 255, 0.8),
-                  1px 1px 0 rgba(0, 0, 0, 0.18),
-                  -1px 1px 0 rgba(0, 0, 0, 0.15)
-                `,
-              }}
-            >
-              {activeItem.label}
-            </span>
-          </motion.div>
+        {/* Collapsed state - show only active section with smooth text transitions */}
+        {!expanded && (
+          <div className="flex items-center relative">
+            <AnimatePresence mode="wait">
+              {activeItem && (
+                <motion.span
+                  key={activeItem.id}
+                  initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+                  transition={{
+                    duration: 0.35,
+                    ease: [0.4, 0.0, 0.2, 1]
+                  }}
+                  style={{
+                    fontSize: '15.5px',
+                    fontWeight: 680,
+                    color: '#1a1a1a',
+                    letterSpacing: '0.45px',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
+                    WebkitFontSmoothing: 'antialiased',
+                    MozOsxFontSmoothing: 'grayscale',
+                    textShadow: `
+                      0 1px 0 rgba(0, 0, 0, 0.35),
+                      0 -1px 0 rgba(255, 255, 255, 0.8),
+                      1px 1px 0 rgba(0, 0, 0, 0.18),
+                      -1px 1px 0 rgba(0, 0, 0, 0.15)
+                    `,
+                  }}
+                >
+                  {activeItem.label}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
         )}
 
         {/* Expanded state - show all sections with stagger */}
