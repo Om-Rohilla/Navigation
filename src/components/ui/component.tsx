@@ -74,67 +74,67 @@ export const PillBase: React.FC = () => {
         width: '580px',
         height: '56px',
         background: `
-          linear-gradient(135deg, #f5f6f7 0%, #eeeff0 30%, #e8e9ea 60%, #e2e3e4 100%)
+          linear-gradient(145deg, #f9f9fb 0%, #f3f3f5 25%, #ededef 50%, #e7e8ea 75%, #e1e2e5 100%)
         `,
         boxShadow: `
-          0 4px 8px rgba(0, 0, 0, 0.15),
-          0 12px 30px rgba(0, 0, 0, 0.1),
-          0 1px 2px rgba(0, 0, 0, 0.08),
-          inset 0 1px 0 rgba(255, 255, 255, 0.8),
-          inset 0 -2px 4px rgba(0, 0, 0, 0.08),
-          inset 2px 2px 4px rgba(0, 0, 0, 0.06),
-          inset -2px 2px 4px rgba(0, 0, 0, 0.05)
+          0 4px 6px rgba(0, 0, 0, 0.18),
+          0 12px 25px rgba(0, 0, 0, 0.10),
+          0 1px 2px rgba(0, 0, 0, 0.10),
+          inset 0 1px 0 rgba(255, 255, 255, 0.65),
+          inset 0 -2px 5px rgba(0, 0, 0, 0.10),
+          inset 2px 2px 6px rgba(0, 0, 0, 0.08),
+          inset -2px 2px 6px rgba(0, 0, 0, 0.07)
         `,
         x: pillShift,
         overflow: 'hidden',
       }}
     >
-      {/* Top highlight ridge */}
+      {/* Top edge bright highlight */}
       <div 
         className="absolute inset-x-0 top-0 rounded-t-full pointer-events-none"
         style={{
-          height: '2px',
-          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 10%, rgba(255, 255, 255, 0.8) 90%, rgba(255, 255, 255, 0) 100%)',
+          height: '1px',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 8%, rgba(255, 255, 255, 0.85) 92%, rgba(255, 255, 255, 0) 100%)',
         }}
       />
       
-      {/* Top-left light source gradient */}
+      {/* Diffuse top-left light source */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0) 60%)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 25%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 70%)',
         }}
       />
       
-      {/* Subtle gloss reflection */}
+      {/* Reflective gloss line */}
       <div 
         className="absolute rounded-full pointer-events-none"
         style={{
-          left: '22%',
-          top: '20%',
-          width: '100px',
-          height: '12px',
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0) 100%)',
-          filter: 'blur(4px)',
-          transform: 'rotate(-8deg)',
+          left: '20%',
+          top: '18%',
+          width: '110px',
+          height: '11px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 85%)',
+          filter: 'blur(3.5px)',
+          transform: 'rotate(-10deg)',
         }}
       />
       
-      {/* Bottom curvature shadow */}
+      {/* Bottom curvature falloff */}
       <div 
         className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
         style={{
-          height: '35%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0) 100%)',
+          height: '40%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, 0) 100%)',
         }}
       />
 
-      {/* Inner diffuse glow */}
+      {/* Subtle inner radiance */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 30px rgba(255, 255, 255, 0.15)',
-          opacity: 0.5,
+          boxShadow: 'inset 0 0 25px rgba(255, 255, 255, 0.18)',
+          opacity: 0.6,
         }}
       />
 
@@ -155,57 +155,57 @@ export const PillBase: React.FC = () => {
               key={index}
               ref={(el) => (itemRefs.current[index] = el)}
               onClick={() => setActiveIndex(index)}
-              className="relative cursor-pointer transition-all duration-250"
+              className="relative cursor-pointer transition-all duration-200"
               style={{
                 fontSize: '15px',
-                fontWeight: isActive ? 600 : 500,
-                color: isActive ? '#5a5a5c' : '#6a6a6c',
+                fontWeight: isActive ? 700 : 600,
+                color: '#464646',
                 textDecoration: 'none',
                 letterSpacing: '0.4px',
                 background: 'transparent',
                 border: 'none',
-                padding: '10px 20px',
+                padding: '10px 22px',
                 outline: 'none',
                 zIndex: 20,
                 whiteSpace: 'nowrap',
-                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro", Poppins, sans-serif',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // Crisp engraved effect - carved into surface
+                // Bold, defined engraved effect
                 textShadow: isActive 
                   ? `
-                    inset 0px 1px 1px rgba(0, 0, 0, 0.25),
-                    0px -1px 1px rgba(255, 255, 255, 0.6),
-                    0px 1px 0px rgba(255, 255, 255, 0.4),
-                    0px 2px 3px rgba(0, 0, 0, 0.15)
+                    inset 0 1px 1px rgba(0, 0, 0, 0.25),
+                    0 -1px 1px rgba(255, 255, 255, 0.7),
+                    0 1px 0 rgba(255, 255, 255, 0.5),
+                    0 2px 4px rgba(0, 0, 0, 0.16)
                   `
                   : `
-                    inset 0px 1px 1px rgba(0, 0, 0, 0.2),
-                    0px -1px 1px rgba(255, 255, 255, 0.5),
-                    0px 1px 0px rgba(255, 255, 255, 0.3),
-                    0px 2px 2px rgba(0, 0, 0, 0.12)
+                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
+                    0 -1px 1px rgba(255, 255, 255, 0.6),
+                    0 1px 0 rgba(255, 255, 255, 0.4),
+                    0 2px 3px rgba(0, 0, 0, 0.14)
                   `,
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = '#4a4a4c'
                   e.currentTarget.style.textShadow = `
-                    inset 0px 1px 1px rgba(0, 0, 0, 0.22),
-                    0px -1px 1px rgba(255, 255, 255, 0.55),
-                    0px 1px 0px rgba(255, 255, 255, 0.35),
-                    0px 2px 2.5px rgba(0, 0, 0, 0.14)
+                    inset 0 1px 1px rgba(0, 0, 0, 0.24),
+                    0 -1px 1px rgba(255, 255, 255, 0.65),
+                    0 1px 0 rgba(255, 255, 255, 0.45),
+                    0 2px 3.5px rgba(0, 0, 0, 0.15)
                   `
+                  e.currentTarget.style.filter = 'brightness(1.03)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = '#6a6a6c'
                   e.currentTarget.style.textShadow = `
-                    inset 0px 1px 1px rgba(0, 0, 0, 0.2),
-                    0px -1px 1px rgba(255, 255, 255, 0.5),
-                    0px 1px 0px rgba(255, 255, 255, 0.3),
-                    0px 2px 2px rgba(0, 0, 0, 0.12)
+                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
+                    0 -1px 1px rgba(255, 255, 255, 0.6),
+                    0 1px 0 rgba(255, 255, 255, 0.4),
+                    0 2px 3px rgba(0, 0, 0, 0.14)
                   `
+                  e.currentTarget.style.filter = 'none'
                 }
               }}
             >
