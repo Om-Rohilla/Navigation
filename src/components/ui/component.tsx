@@ -157,9 +157,9 @@ export const PillBase: React.FC = () => {
               onClick={() => setActiveIndex(index)}
               className="relative cursor-pointer transition-all duration-200"
               style={{
-                fontSize: '15px',
-                fontWeight: isActive ? 600 : 500,
-                color: '#464646',
+                fontSize: isActive ? '15.5px' : '15px',
+                fontWeight: isActive ? 650 : 500,
+                color: isActive ? '#2a2a2a' : '#5a5a5a',
                 textDecoration: 'none',
                 letterSpacing: '0.4px',
                 background: 'transparent',
@@ -171,41 +171,42 @@ export const PillBase: React.FC = () => {
                 fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", Poppins, sans-serif',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // Bold, defined engraved effect
+                transform: isActive ? 'translateY(-1px)' : 'translateY(0)',
+                // Engraved effect
                 textShadow: isActive 
                   ? `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.25),
+                    inset 0 1px 1px rgba(0, 0, 0, 0.28),
                     0 -1px 1px rgba(255, 255, 255, 0.7),
                     0 1px 0 rgba(255, 255, 255, 0.5),
-                    0 2px 4px rgba(0, 0, 0, 0.16)
+                    0 2px 4px rgba(0, 0, 0, 0.18)
                   `
                   : `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
+                    inset 0 1px 1px rgba(0, 0, 0, 0.20),
                     0 -1px 1px rgba(255, 255, 255, 0.6),
                     0 1px 0 rgba(255, 255, 255, 0.4),
-                    0 2px 3px rgba(0, 0, 0, 0.14)
+                    0 2px 3px rgba(0, 0, 0, 0.12)
                   `,
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
+                  e.currentTarget.style.color = '#484848'
                   e.currentTarget.style.textShadow = `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.24),
+                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
                     0 -1px 1px rgba(255, 255, 255, 0.65),
                     0 1px 0 rgba(255, 255, 255, 0.45),
-                    0 2px 3.5px rgba(0, 0, 0, 0.15)
+                    0 2px 3.5px rgba(0, 0, 0, 0.14)
                   `
-                  e.currentTarget.style.filter = 'brightness(1.03)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
+                  e.currentTarget.style.color = '#5a5a5a'
                   e.currentTarget.style.textShadow = `
-                    inset 0 1px 1px rgba(0, 0, 0, 0.22),
+                    inset 0 1px 1px rgba(0, 0, 0, 0.20),
                     0 -1px 1px rgba(255, 255, 255, 0.6),
                     0 1px 0 rgba(255, 255, 255, 0.4),
-                    0 2px 3px rgba(0, 0, 0, 0.14)
+                    0 2px 3px rgba(0, 0, 0, 0.12)
                   `
-                  e.currentTarget.style.filter = 'none'
                 }
               }}
             >
