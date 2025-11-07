@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, useSpring } from 'framer-motion'
 
 interface NavItem {
@@ -11,10 +11,7 @@ interface NavItem {
  */
 export const PillBase: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0)
-  
-  // Keep last computed numbers for non-animated reads (optional)
-  const lastCapsule = useRef({ left: 0, width: 0 })
-  
+  const [capsuleProps, setCapsuleProps] = useState({ width: 0, left: 0 })
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
   
@@ -25,72 +22,50 @@ export const PillBase: React.FC = () => {
     { label: 'Contact' },
   ]
 
-  // Springs for premium motion
-  const capsuleX = useSpring(0, { stiffness: 250, damping: 25, mass: 1 })
-  const capsuleWidth = useSpring(0, { stiffness: 250, damping: 25, mass: 1 })
-  const pillShift = useSpring(0, { stiffness: 250, damping: 25, mass: 1 })
+  // Spring animations for smooth, bouncy motion
+  const capsuleX = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+  const capsuleWidth = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+  const pillShift = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
 
-  // Helper function to compute and set capsule position
-  const computeAndSetCapsule = () => {
-    const container = containerRef.current
-    const activeEl = itemRefs.current[activeIndex]
-    if (!container || !activeEl) return
-
-    // Read container paddings for correct clamping
-    const styles = getComputedStyle(container)
-    const padL = parseFloat(styles.paddingLeft || '0')
-    const padR = parseFloat(styles.paddingRight || '0')
-
-    // Use offsetLeft/offsetWidth which are relative to the positioned container's padding box
-    const btnLeft = activeEl.offsetLeft
-    const btnWidth = activeEl.offsetWidth
-
-    // Capsule sizing: text width + symmetric horizontal padding
-    const horizontalPadding = 20 // total: 10px either side
-    const targetWidth = btnWidth + horizontalPadding
-
-    // Center capsule under the button
-    const targetLeft = btnLeft + (btnWidth - targetWidth) / 2
-
-    // Clamp so it never bleeds past the rounded pill edges
-    const maxLeft = container.clientWidth - padR - targetWidth
-    const clampedLeft = Math.max(padL, Math.min(targetLeft, maxLeft))
-
-    lastCapsule.current = { left: clampedLeft, width: targetWidth }
-
-    capsuleX.set(clampedLeft)
-    capsuleWidth.set(targetWidth)
-
-    // Subtle parallax shift of the whole pill
-    const shift = (activeIndex - (navItems.length - 1) / 2) * 1.5
-    pillShift.set(shift)
-  }
-
-  // Recompute BEFORE paint to avoid visible jump
-  useLayoutEffect(() => {
-    computeAndSetCapsule()
-    // Recompute once fonts load (can change text widths)
-    if (document.fonts && 'ready' in document.fonts) {
-      document.fonts.ready.then(() => computeAndSetCapsule())
-    }
-  }, [activeIndex, navItems.length])
-
-  // Also observe container resize
+  // Update capsule position when active item changes or window resizes
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const ro = new ResizeObserver(() => computeAndSetCapsule())
-    ro.observe(container)
-
-    const onWinResize = () => computeAndSetCapsule()
-    window.addEventListener('resize', onWinResize)
-
-    return () => {
-      ro.disconnect()
-      window.removeEventListener('resize', onWinResize)
+    const updateCapsulePosition = () => {
+      const activeElement = itemRefs.current[activeIndex]
+      const container = containerRef.current
+      
+      if (activeElement && container) {
+        const containerRect = container.getBoundingClientRect()
+        const buttonRect = activeElement.getBoundingClientRect()
+        
+        // Calculate position relative to container
+        const left = buttonRect.left - containerRect.left
+        const width = buttonRect.width
+        
+        setCapsuleProps({ width, left })
+        capsuleX.set(left)
+        capsuleWidth.set(width)
+        
+        // Calculate subtle pill shift based on direction from center
+        const center = (navItems.length - 1) / 2
+        const shift = (activeIndex - center) * 1.5 // Subtle 1.5px per item from center
+        pillShift.set(shift)
+      }
     }
-  }, [])
+
+    // Update immediately
+    updateCapsulePosition()
+    
+    // Update on window resize
+    window.addEventListener('resize', updateCapsulePosition)
+    
+    // Small delay to ensure DOM is fully rendered
+    const timer = setTimeout(updateCapsulePosition, 50)
+    
+    return () => {
+      window.removeEventListener('resize', updateCapsulePosition)
+      clearTimeout(timer)
+    }
+  }, [activeIndex, capsuleX, capsuleWidth, pillShift, navItems.length])
 
   return (
     <motion.nav
@@ -114,7 +89,7 @@ export const PillBase: React.FC = () => {
         x: pillShift,
       }}
     >
-      {/* Top glossy highlight */}
+      {/* Glossy top highlight - primary light source */}
       <div 
         className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
         style={{
@@ -123,7 +98,7 @@ export const PillBase: React.FC = () => {
         }}
       />
       
-      {/* Top edge shine */}
+      {/* Intense top edge shine */}
       <div 
         className="absolute inset-x-0 top-0 rounded-full pointer-events-none"
         style={{
@@ -133,7 +108,7 @@ export const PillBase: React.FC = () => {
         }}
       />
       
-      {/* Bottom gradient shadow */}
+      {/* Bottom shadow for depth */}
       <div 
         className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
         style={{
@@ -142,7 +117,7 @@ export const PillBase: React.FC = () => {
         }}
       />
 
-      {/* Bottom ambient occlusion */}
+      {/* Ambient occlusion shadow at bottom edge */}
       <div 
         className="absolute inset-x-0 bottom-0 rounded-full pointer-events-none"
         style={{
@@ -152,7 +127,7 @@ export const PillBase: React.FC = () => {
         }}
       />
 
-      {/* Left highlight */}
+      {/* Left-side subtle highlight for dimension */}
       <div 
         className="absolute inset-y-0 left-0 rounded-full pointer-events-none"
         style={{
@@ -161,7 +136,7 @@ export const PillBase: React.FC = () => {
         }}
       />
 
-      {/* Right shadow */}
+      {/* Right-side subtle shadow for dimension */}
       <div 
         className="absolute inset-y-0 right-0 rounded-full pointer-events-none"
         style={{
@@ -170,7 +145,7 @@ export const PillBase: React.FC = () => {
         }}
       />
 
-      {/* Outer edge border */}
+      {/* Outer edge definition with subtle border */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
@@ -178,7 +153,7 @@ export const PillBase: React.FC = () => {
         }}
       />
 
-      {/* Specular highlight */}
+      {/* Specular highlight - creates glass-like quality */}
       <div 
         className="absolute left-12 top-2 rounded-full pointer-events-none"
         style={{
@@ -199,71 +174,58 @@ export const PillBase: React.FC = () => {
       >
         {/* Animated selector capsule */}
         <motion.div
-          className="absolute rounded-full pointer-events-none"
+          className="absolute rounded-xl pointer-events-none overflow-hidden"
           style={{
             height: '40px',
             width: capsuleWidth,
             x: capsuleX,
             top: '8px',
-            borderRadius: '9999px',
-            background: 'linear-gradient(180deg, #ffffff 0%, #f9f9f9 50%, #eeeeee 100%)',
+            background: 'linear-gradient(180deg, #ffffff 0%, #f9f9f9 50%, #f2f2f2 100%)',
             boxShadow: `
-              0 1px 2px rgba(0, 0, 0, 0.03),
-              0 2px 4px rgba(0, 0, 0, 0.04),
-              0 4px 8px rgba(0, 0, 0, 0.06),
-              0 8px 16px rgba(0, 0, 0, 0.08),
-              inset 0 1px 2px rgba(255, 255, 255, 0.95),
-              inset 0 -2px 4px rgba(0, 0, 0, 0.06),
+              0 2px 4px rgba(0, 0, 0, 0.05),
+              0 4px 8px rgba(0, 0, 0, 0.07),
+              0 8px 16px rgba(0, 0, 0, 0.09),
+              inset 0 1px 2px rgba(255, 255, 255, 1),
+              inset 0 -2px 3px rgba(0, 0, 0, 0.06),
               inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)
             `,
           }}
         >
-          {/* Capsule gloss */}
+          {/* Capsule top highlight */}
           <div
-            className="absolute inset-x-0 top-0 rounded-full"
+            className="absolute inset-x-0 top-0 rounded-t-xl"
             style={{
-              height: '55%',
-              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%)',
+              height: '50%',
+              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%)',
             }}
           />
           
-          {/* Edge shine */}
+          {/* Capsule intense top shine */}
           <div
-            className="absolute inset-x-0 top-0 rounded-full"
+            className="absolute inset-x-0 top-0 rounded-t-xl"
             style={{
               height: '20%',
-              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%)',
+              background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)',
               filter: 'blur(0.5px)',
             }}
           />
           
-          {/* Bottom shadow */}
+          {/* Capsule bottom shadow */}
           <div
-            className="absolute inset-x-0 bottom-0 rounded-full"
+            className="absolute inset-x-0 bottom-0 rounded-b-xl"
             style={{
-              height: '40%',
-              background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.02) 50%, rgba(0, 0, 0, 0) 100%)',
+              height: '35%',
+              background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 100%)',
             }}
           />
 
-          {/* Bottom ambient occlusion */}
-          <div
-            className="absolute inset-x-0 bottom-0 rounded-full"
-            style={{
-              height: '15%',
-              background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%)',
-              filter: 'blur(1px)',
-            }}
-          />
-
-          {/* Specular highlight */}
+          {/* Capsule specular highlight */}
           <div
             className="absolute left-6 top-1.5 rounded-full"
             style={{
-              width: '30%',
-              maxWidth: '50px',
+              width: '50px',
               height: '10px',
-              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%)',
+              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%)',
               filter: 'blur(3px)',
             }}
           />
@@ -276,36 +238,30 @@ export const PillBase: React.FC = () => {
           return (
             <button
               key={index}
-              ref={(el) => {
-                itemRefs.current[index] = el
-              }}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setActiveIndex(index)
-              }}
-              className="relative transition-all duration-150 py-2"
+              ref={(el) => (itemRefs.current[index] = el)}
+              onClick={() => setActiveIndex(index)}
+              className="relative cursor-pointer transition-all duration-200"
               style={{
                 fontSize: '15px',
                 fontWeight: isActive ? 600 : 500,
-                color: isActive ? 'rgba(0, 0, 0, 0.88)' : 'rgba(0, 0, 0, 0.52)',
+                color: isActive ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.55)',
+                textDecoration: 'none',
                 letterSpacing: '-0.01em',
                 background: 'transparent',
                 border: 'none',
+                padding: '10px 20px',
                 outline: 'none',
-                cursor: 'pointer',
                 zIndex: 20,
-                padding: '8px 0',
                 whiteSpace: 'nowrap',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.72)'
+                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.75)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.52)'
+                  e.currentTarget.style.color = 'rgba(0, 0, 0, 0.55)'
                 }
               }}
             >
@@ -317,3 +273,4 @@ export const PillBase: React.FC = () => {
     </motion.nav>
   )
 }
+
