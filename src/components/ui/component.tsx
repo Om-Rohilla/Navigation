@@ -74,7 +74,7 @@ export const PillBase: React.FC = () => {
         width: '580px',
         height: '56px',
         background: `
-          linear-gradient(135deg, #f8f8f8 0%, #f5f5f7 30%, #f0f0f2 50%, #ecedef 70%, #f2f2f4 100%)
+          linear-gradient(135deg, #f8f8f8 0%, #f5f5f7 25%, #f1f1f3 50%, #ececee 75%, #e9e9ea 100%)
         `,
         boxShadow: `
           0 4px 8px rgba(0, 0, 0, 0.15),
@@ -187,6 +187,15 @@ export const PillBase: React.FC = () => {
           boxShadow: 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.06)',
         }}
       />
+      
+      {/* Inner edge glow for curvature emphasis */}
+      <div 
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.15)',
+          opacity: 0.4,
+        }}
+      />
 
       {/* Navigation items container */}
       <div 
@@ -205,33 +214,61 @@ export const PillBase: React.FC = () => {
               key={index}
               ref={(el) => (itemRefs.current[index] = el)}
               onClick={() => setActiveIndex(index)}
-              className="relative cursor-pointer transition-all duration-200"
+              className="relative cursor-pointer transition-all duration-300"
               style={{
                 fontSize: '15px',
                 fontWeight: isActive ? 600 : 500,
-                color: isActive ? '#4a4a4a' : '#6b6b6b',
+                color: isActive ? '#3b3b3b' : '#5a5a5a',
                 textDecoration: 'none',
-                letterSpacing: '-0.015em',
+                letterSpacing: '0.5px',
                 background: 'transparent',
                 border: 'none',
                 padding: '10px 20px',
                 outline: 'none',
                 zIndex: 20,
                 whiteSpace: 'nowrap',
+                // Engraved/embossed effect - light from top-left
                 textShadow: isActive 
-                  ? '0 1px 1px rgba(255, 255, 255, 0.8), 0 -0.5px 0.5px rgba(0, 0, 0, 0.1)' 
-                  : '0 1px 1px rgba(255, 255, 255, 0.6), 0 -0.5px 0.5px rgba(0, 0, 0, 0.08)',
+                  ? `
+                    0 1px 0 rgba(255, 255, 255, 0.9),
+                    0 2px 3px rgba(0, 0, 0, 0.25),
+                    0 -1px 1px rgba(0, 0, 0, 0.15),
+                    1px 0 1px rgba(0, 0, 0, 0.1),
+                    -1px 0 1px rgba(255, 255, 255, 0.5)
+                  `
+                  : `
+                    0 1px 0 rgba(255, 255, 255, 0.7),
+                    0 2px 2px rgba(0, 0, 0, 0.18),
+                    0 -0.5px 0.5px rgba(0, 0, 0, 0.12),
+                    0.5px 0 0.5px rgba(0, 0, 0, 0.08),
+                    -0.5px 0 0.5px rgba(255, 255, 255, 0.4)
+                  `,
+                filter: isActive ? 'contrast(1.1)' : 'contrast(1)',
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = '#555555'
-                  e.currentTarget.style.textShadow = '0 1px 1px rgba(255, 255, 255, 0.7), 0 -0.5px 0.5px rgba(0, 0, 0, 0.09)'
+                  e.currentTarget.style.color = '#454545'
+                  e.currentTarget.style.textShadow = `
+                    0 1px 0 rgba(255, 255, 255, 0.85),
+                    0 2px 2.5px rgba(0, 0, 0, 0.22),
+                    0 -0.5px 0.5px rgba(0, 0, 0, 0.14),
+                    0.5px 0 0.5px rgba(0, 0, 0, 0.09),
+                    -0.5px 0 0.5px rgba(255, 255, 255, 0.45)
+                  `
+                  e.currentTarget.style.filter = 'contrast(1.05) brightness(1.05)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.color = '#6b6b6b'
-                  e.currentTarget.style.textShadow = '0 1px 1px rgba(255, 255, 255, 0.6), 0 -0.5px 0.5px rgba(0, 0, 0, 0.08)'
+                  e.currentTarget.style.color = '#5a5a5a'
+                  e.currentTarget.style.textShadow = `
+                    0 1px 0 rgba(255, 255, 255, 0.7),
+                    0 2px 2px rgba(0, 0, 0, 0.18),
+                    0 -0.5px 0.5px rgba(0, 0, 0, 0.12),
+                    0.5px 0 0.5px rgba(0, 0, 0, 0.08),
+                    -0.5px 0 0.5px rgba(255, 255, 255, 0.4)
+                  `
+                  e.currentTarget.style.filter = 'contrast(1)'
                 }
               }}
             >
