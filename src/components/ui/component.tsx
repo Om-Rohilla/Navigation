@@ -13,6 +13,7 @@ export const PillBase: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [capsuleProps, setCapsuleProps] = useState({ width: 0, left: 0 })
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
   
   const navItems: NavItem[] = [
     { label: 'Home' },
@@ -23,22 +24,48 @@ export const PillBase: React.FC = () => {
 
   // Spring animations for smooth, bouncy motion
   const capsuleX = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
+  const capsuleWidth = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
   const pillShift = useSpring(0, { stiffness: 220, damping: 25, mass: 1 })
 
-  // Update capsule position when active item changes
+  // Update capsule position when active item changes or window resizes
   useEffect(() => {
-    const activeElement = itemRefs.current[activeIndex]
-    if (activeElement) {
-      const { offsetLeft, offsetWidth } = activeElement
-      setCapsuleProps({ width: offsetWidth, left: offsetLeft })
-      capsuleX.set(offsetLeft)
+    const updateCapsulePosition = () => {
+      const activeElement = itemRefs.current[activeIndex]
+      const container = containerRef.current
       
-      // Calculate subtle pill shift based on direction
-      const center = 2 // Number of items / 2
-      const shift = (activeIndex - center + 0.5) * 1.5 // Subtle 1.5px per item from center
-      pillShift.set(shift)
+      if (activeElement && container) {
+        const containerRect = container.getBoundingClientRect()
+        const buttonRect = activeElement.getBoundingClientRect()
+        
+        // Calculate position relative to container
+        const left = buttonRect.left - containerRect.left
+        const width = buttonRect.width
+        
+        setCapsuleProps({ width, left })
+        capsuleX.set(left)
+        capsuleWidth.set(width)
+        
+        // Calculate subtle pill shift based on direction from center
+        const center = (navItems.length - 1) / 2
+        const shift = (activeIndex - center) * 1.5 // Subtle 1.5px per item from center
+        pillShift.set(shift)
+      }
     }
-  }, [activeIndex, capsuleX, pillShift])
+
+    // Update immediately
+    updateCapsulePosition()
+    
+    // Update on window resize
+    window.addEventListener('resize', updateCapsulePosition)
+    
+    // Small delay to ensure DOM is fully rendered
+    const timer = setTimeout(updateCapsulePosition, 50)
+    
+    return () => {
+      window.removeEventListener('resize', updateCapsulePosition)
+      clearTimeout(timer)
+    }
+  }, [activeIndex, capsuleX, capsuleWidth, pillShift, navItems.length])
 
   return (
     <motion.nav
@@ -139,6 +166,7 @@ export const PillBase: React.FC = () => {
 
       {/* Navigation items container */}
       <div 
+        ref={containerRef}
         className="relative z-10 h-full flex items-center justify-evenly px-8"
         style={{
           fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, sans-serif',
@@ -149,7 +177,7 @@ export const PillBase: React.FC = () => {
           className="absolute rounded-xl pointer-events-none"
           style={{
             height: '40px',
-            width: capsuleProps.width,
+            width: capsuleWidth,
             x: capsuleX,
             top: '8px',
             background: 'linear-gradient(180deg, #ffffff 0%, #f8f8f8 50%, #f0f0f0 100%)',
