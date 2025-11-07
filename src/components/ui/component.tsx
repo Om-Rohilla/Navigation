@@ -37,6 +37,10 @@ export const PillBase: React.FC = () => {
         const containerRect = container.getBoundingClientRect()
         const buttonRect = activeElement.getBoundingClientRect()
         
+        // Debug: Log which item is active
+        console.log(`Active Index: ${activeIndex}, Label: ${navItems[activeIndex].label}`)
+        console.log('Button position:', buttonRect.left, 'Container position:', containerRect.left)
+        
         // Capsule padding around text
         const horizontalPadding = 20 // 10px on each side
         
@@ -44,6 +48,8 @@ export const PillBase: React.FC = () => {
         const buttonCenterX = buttonRect.left - containerRect.left + buttonRect.width / 2
         const capsuleWidthValue = buttonRect.width + horizontalPadding
         const capsuleLeft = buttonCenterX - capsuleWidthValue / 2
+        
+        console.log('Capsule moving to X:', capsuleLeft, 'Width:', capsuleWidthValue)
         
         setCapsuleProps({ width: capsuleWidthValue, left: capsuleLeft })
         capsuleX.set(capsuleLeft)
@@ -254,8 +260,14 @@ export const PillBase: React.FC = () => {
           return (
             <button
               key={index}
-              ref={(el) => (itemRefs.current[index] = el)}
-              onClick={() => setActiveIndex(index)}
+              ref={(el) => {
+                itemRefs.current[index] = el
+              }}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setActiveIndex(index)
+              }}
               className="relative cursor-pointer transition-all duration-150 py-2"
               style={{
                 fontSize: '15px',
@@ -265,6 +277,8 @@ export const PillBase: React.FC = () => {
                 letterSpacing: '-0.01em',
                 background: 'transparent',
                 border: 'none',
+                outline: 'none',
+                cursor: 'pointer',
                 zIndex: 20,
                 padding: '8px 0',
                 whiteSpace: 'nowrap',
