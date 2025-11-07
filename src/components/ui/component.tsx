@@ -278,13 +278,10 @@ export const PillBase: React.FC = () => {
                 MozOsxFontSmoothing: 'grayscale',
                 transform: 'translateY(-1.5px)',
                 textShadow: `
-                  0 1px 0 rgba(0, 0, 0, 0.45),
-                  0 2px 1px rgba(0, 0, 0, 0.30),
-                  0 -1px 0 rgba(255, 255, 255, 0.9),
-                  0 -2px 3px rgba(255, 255, 255, 0.7),
-                  1px 1px 2px rgba(0, 0, 0, 0.25),
-                  -1px 1px 2px rgba(0, 0, 0, 0.22),
-                  0 3px 6px rgba(0, 0, 0, 0.18)
+                  0 1px 0 rgba(0, 0, 0, 0.35),
+                  0 -1px 0 rgba(255, 255, 255, 0.8),
+                  1px 1px 0 rgba(0, 0, 0, 0.18),
+                  -1px 1px 0 rgba(0, 0, 0, 0.15)
                 `,
               }}
             >
@@ -329,21 +326,16 @@ export const PillBase: React.FC = () => {
                     transform: isActive ? 'translateY(-1.5px)' : 'translateY(0)',
                     textShadow: isActive 
                       ? `
-                        0 1px 0 rgba(0, 0, 0, 0.45),
-                        0 2px 1px rgba(0, 0, 0, 0.30),
-                        0 -1px 0 rgba(255, 255, 255, 0.9),
-                        0 -2px 3px rgba(255, 255, 255, 0.7),
-                        1px 1px 2px rgba(0, 0, 0, 0.25),
-                        -1px 1px 2px rgba(0, 0, 0, 0.22),
-                        0 3px 6px rgba(0, 0, 0, 0.18)
+                        0 1px 0 rgba(0, 0, 0, 0.35),
+                        0 -1px 0 rgba(255, 255, 255, 0.8),
+                        1px 1px 0 rgba(0, 0, 0, 0.18),
+                        -1px 1px 0 rgba(0, 0, 0, 0.15)
                       `
                       : `
-                        0 1px 0 rgba(0, 0, 0, 0.28),
-                        0 2px 1px rgba(0, 0, 0, 0.15),
-                        0 -1px 0 rgba(255, 255, 255, 0.75),
-                        0 -2px 2px rgba(255, 255, 255, 0.5),
-                        1px 1px 1px rgba(0, 0, 0, 0.15),
-                        0 2px 4px rgba(0, 0, 0, 0.12)
+                        0 1px 0 rgba(0, 0, 0, 0.22),
+                        0 -1px 0 rgba(255, 255, 255, 0.65),
+                        1px 1px 0 rgba(0, 0, 0, 0.12),
+                        -1px 1px 0 rgba(0, 0, 0, 0.10)
                       `,
                   }}
                   onMouseEnter={(e) => {
@@ -351,12 +343,10 @@ export const PillBase: React.FC = () => {
                       e.currentTarget.style.color = '#3a3a3a'
                       e.currentTarget.style.transform = 'translateY(-0.5px)'
                       e.currentTarget.style.textShadow = `
-                        0 1px 0 rgba(0, 0, 0, 0.35),
-                        0 2px 1px rgba(0, 0, 0, 0.22),
-                        0 -1px 0 rgba(255, 255, 255, 0.82),
-                        0 -2px 2.5px rgba(255, 255, 255, 0.6),
-                        1px 1px 1.5px rgba(0, 0, 0, 0.18),
-                        0 2px 4.5px rgba(0, 0, 0, 0.15)
+                        0 1px 0 rgba(0, 0, 0, 0.28),
+                        0 -1px 0 rgba(255, 255, 255, 0.72),
+                        1px 1px 0 rgba(0, 0, 0, 0.15),
+                        -1px 1px 0 rgba(0, 0, 0, 0.12)
                       `
                     }
                   }}
@@ -365,12 +355,10 @@ export const PillBase: React.FC = () => {
                       e.currentTarget.style.color = '#656565'
                       e.currentTarget.style.transform = 'translateY(0)'
                       e.currentTarget.style.textShadow = `
-                        0 1px 0 rgba(0, 0, 0, 0.28),
-                        0 2px 1px rgba(0, 0, 0, 0.15),
-                        0 -1px 0 rgba(255, 255, 255, 0.75),
-                        0 -2px 2px rgba(255, 255, 255, 0.5),
-                        1px 1px 1px rgba(0, 0, 0, 0.15),
-                        0 2px 4px rgba(0, 0, 0, 0.12)
+                        0 1px 0 rgba(0, 0, 0, 0.22),
+                        0 -1px 0 rgba(255, 255, 255, 0.65),
+                        1px 1px 0 rgba(0, 0, 0, 0.12),
+                        -1px 1px 0 rgba(0, 0, 0, 0.10)
                       `
                     }
                   }}
