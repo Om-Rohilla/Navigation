@@ -1,5 +1,5 @@
 import React from 'react'
-import { PillNav } from '@/components/ui/component'
+import { PillBase } from '@/components/ui/component'
 
 /**
  * Demo file - Default export is required
@@ -8,18 +8,19 @@ import { PillNav } from '@/components/ui/component'
 export default function Demo() {
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-8"
+      className="min-h-screen flex items-center justify-center px-8"
       style={{
         background: '#ffffff',
       }}
     >
-      {/* Ambient shadow container for floating effect */}
+      {/* Ambient shadow wrapper for floating effect */}
       <div
+        className="w-full max-w-5xl"
         style={{
-          filter: 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.08)) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.06))',
+          filter: 'drop-shadow(0 24px 48px rgba(0, 0, 0, 0.1)) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.08))',
         }}
       >
-        <PillNav />
+        <PillBase />
       </div>
     </div>
   )
