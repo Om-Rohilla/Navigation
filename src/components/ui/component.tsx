@@ -32,34 +32,32 @@ export const PillBase: React.FC = () => {
     const updateCapsulePosition = () => {
       const activeElement = itemRefs.current[activeIndex]
       const container = containerRef.current
-      
-      if (activeElement && container) {
-        const containerRect = container.getBoundingClientRect()
-        const buttonRect = activeElement.getBoundingClientRect()
-        
-        // Debug: Log which item is active
-        console.log(`Active Index: ${activeIndex}, Label: ${navItems[activeIndex].label}`)
-        console.log('Button position:', buttonRect.left, 'Container position:', containerRect.left)
-        
-        // Capsule padding around text
-        const horizontalPadding = 20 // 10px on each side
-        
-        // Calculate position relative to container (center the capsule on the button)
-        const buttonCenterX = buttonRect.left - containerRect.left + buttonRect.width / 2
-        const capsuleWidthValue = buttonRect.width + horizontalPadding
-        const capsuleLeft = buttonCenterX - capsuleWidthValue / 2
-        
-        console.log('Capsule moving to X:', capsuleLeft, 'Width:', capsuleWidthValue)
-        
-        setCapsuleProps({ width: capsuleWidthValue, left: capsuleLeft })
-        capsuleX.set(capsuleLeft)
-        capsuleWidth.set(capsuleWidthValue)
-        
-        // Calculate subtle pill shift based on direction from center
-        const center = (navItems.length - 1) / 2
-        const shift = (activeIndex - center) * 1.5 // Subtle 1.5px per item from center
-        pillShift.set(shift)
-      }
+      if (!activeElement || !container) return
+
+      // Measure DOM positions
+      const containerRect = container.getBoundingClientRect()
+      const buttonRect = activeElement.getBoundingClientRect()
+
+      // Capsule horizontal padding (equal space around text)
+      const horizontalPadding = 20
+
+      // Compute left offset relative to container
+      const leftOffset = buttonRect.left - containerRect.left
+      const capsuleWidthValue = buttonRect.width + horizontalPadding
+      const capsuleLeft = leftOffset - horizontalPadding / 2
+
+      // Prevent capsule from escaping the container edges
+      const maxLeft = containerRect.width - capsuleWidthValue - 4
+      const clampedLeft = Math.max(4, Math.min(capsuleLeft, maxLeft))
+
+      // Update state and Framer springs for smooth motion
+      capsuleX.set(clampedLeft)
+      capsuleWidth.set(capsuleWidthValue)
+      setCapsuleProps({ width: capsuleWidthValue, left: clampedLeft })
+
+      // Optional subtle main pill parallax motion (premium touch)
+      const shift = (activeIndex - (navItems.length - 1) / 2) * 1.5
+      pillShift.set(shift)
     }
 
     // Update immediately
@@ -190,6 +188,7 @@ export const PillBase: React.FC = () => {
             width: capsuleWidth,
             x: capsuleX,
             top: '8px',
+            borderRadius: '9999px',
             background: 'linear-gradient(180deg, #ffffff 0%, #f9f9f9 50%, #eeeeee 100%)',
             boxShadow: `
               0 1px 2px rgba(0, 0, 0, 0.03),
