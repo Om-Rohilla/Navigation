@@ -1,16 +1,27 @@
 import React from 'react'
 
+interface NavItem {
+  label: string
+}
+
 /**
- * 3D Pill Base
- * A minimal, elegant pill-shaped container with realistic depth and lighting
+ * 3D Pill Navigation Bar
+ * A premium 3D navigation component with clean typography and perfect spacing
  */
 export const PillBase: React.FC = () => {
+  const navItems: NavItem[] = [
+    { label: 'Home' },
+    { label: 'Problem' },
+    { label: 'Solution' },
+    { label: 'Contact' },
+  ]
+
   return (
-    <div
+    <nav
       className="relative rounded-full overflow-hidden"
       style={{
         width: '580px',
-        height: '50px',
+        height: '56px',
         background: `
           linear-gradient(145deg, #fafafa 0%, #f4f4f6 25%, #f0f0f2 50%, #ececee 75%, #f2f2f4 100%)
         `,
@@ -100,7 +111,48 @@ export const PillBase: React.FC = () => {
           filter: 'blur(3px)',
         }}
       />
-    </div>
+
+      {/* Navigation items container */}
+      <div 
+        className="relative z-10 h-full flex items-center justify-evenly px-8"
+        style={{
+          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, sans-serif',
+        }}
+      >
+        {navItems.map((item, index) => (
+          <a
+            key={index}
+            href="#"
+            className="relative group cursor-pointer transition-colors duration-200"
+            style={{
+              fontSize: '16px',
+              fontWeight: 500,
+              color: 'rgba(0, 0, 0, 0.65)',
+              textDecoration: 'none',
+              letterSpacing: '-0.01em',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'rgba(0, 0, 0, 0.9)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(0, 0, 0, 0.65)'
+            }}
+          >
+            {item.label}
+            
+            {/* Subtle hover underline */}
+            <span 
+              className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              style={{
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%)',
+                transform: 'translateY(2px)',
+              }}
+            />
+          </a>
+        ))}
+      </div>
+    </nav>
   )
 }
 
