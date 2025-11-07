@@ -74,97 +74,67 @@ export const PillBase: React.FC = () => {
         width: '580px',
         height: '56px',
         background: `
-          linear-gradient(145deg, #e8eaed 0%, #dddfe2 20%, #d4d6d9 40%, #cfd1d4 60%, #c8cacd 80%, #d2d4d7 100%)
+          linear-gradient(135deg, #f5f6f7 0%, #eeeff0 30%, #e8e9ea 60%, #e2e3e4 100%)
         `,
         boxShadow: `
-          0 8px 20px rgba(0, 0, 0, 0.25),
-          0 4px 10px rgba(0, 0, 0, 0.15),
-          0 2px 4px rgba(0, 0, 0, 0.12),
-          inset 0 -3px 8px rgba(0, 0, 0, 0.2),
-          inset 0 -6px 12px rgba(0, 0, 0, 0.12),
-          inset 3px 3px 8px rgba(0, 0, 0, 0.15),
-          inset -3px 3px 8px rgba(0, 0, 0, 0.12),
-          inset 0 1px 1px rgba(255, 255, 255, 0.5)
+          0 4px 8px rgba(0, 0, 0, 0.15),
+          0 12px 30px rgba(0, 0, 0, 0.1),
+          0 1px 2px rgba(0, 0, 0, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.8),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.08),
+          inset 2px 2px 4px rgba(0, 0, 0, 0.06),
+          inset -2px 2px 4px rgba(0, 0, 0, 0.05)
         `,
         x: pillShift,
         overflow: 'hidden',
       }}
     >
-      {/* Top-left light source - primary illumination */}
-      <div 
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.15) 25%, rgba(255, 255, 255, 0) 50%)',
-        }}
-      />
-      
-      {/* Rim light effect - top edge */}
+      {/* Top highlight ridge */}
       <div 
         className="absolute inset-x-0 top-0 rounded-t-full pointer-events-none"
         style={{
-          height: '50%',
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 30%, rgba(255, 255, 255, 0) 100%)',
+          height: '2px',
+          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 10%, rgba(255, 255, 255, 0.8) 90%, rgba(255, 255, 255, 0) 100%)',
         }}
       />
       
-      {/* Polished gloss layer */}
+      {/* Top-left light source gradient */}
       <div 
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          background: `
-            radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%)
-          `,
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0) 60%)',
         }}
       />
       
-      {/* Bottom falloff shadow - natural curvature */}
-      <div 
-        className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
-        style={{
-          height: '50%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.12) 30%, rgba(0, 0, 0, 0) 100%)',
-        }}
-      />
-
-      {/* Deep inner shadow at bottom edge */}
-      <div 
-        className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
-        style={{
-          height: '20%',
-          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%)',
-          filter: 'blur(3px)',
-        }}
-      />
-
-      {/* Left illumination gradient */}
-      <div 
-        className="absolute inset-y-0 left-0 rounded-l-full pointer-events-none"
-        style={{
-          width: '40%',
-          background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%)',
-        }}
-      />
-
-      {/* Right shadow gradient */}
-      <div 
-        className="absolute inset-y-0 right-0 rounded-r-full pointer-events-none"
-        style={{
-          width: '40%',
-          background: 'linear-gradient(270deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.08) 40%, rgba(0, 0, 0, 0) 100%)',
-        }}
-      />
-
-      {/* Subtle specular reflection */}
+      {/* Subtle gloss reflection */}
       <div 
         className="absolute rounded-full pointer-events-none"
         style={{
-          left: '20%',
-          top: '18%',
-          width: '120px',
-          height: '14px',
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 80%)',
-          filter: 'blur(5px)',
-          transform: 'rotate(-10deg)',
+          left: '22%',
+          top: '20%',
+          width: '100px',
+          height: '12px',
+          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0) 100%)',
+          filter: 'blur(4px)',
+          transform: 'rotate(-8deg)',
+        }}
+      />
+      
+      {/* Bottom curvature shadow */}
+      <div 
+        className="absolute inset-x-0 bottom-0 rounded-b-full pointer-events-none"
+        style={{
+          height: '35%',
+          background: 'linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0) 100%)',
+        }}
+      />
+
+      {/* Inner diffuse glow */}
+      <div 
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 30px rgba(255, 255, 255, 0.15)',
+          opacity: 0.5,
         }}
       />
 
@@ -185,38 +155,57 @@ export const PillBase: React.FC = () => {
               key={index}
               ref={(el) => (itemRefs.current[index] = el)}
               onClick={() => setActiveIndex(index)}
-              className="relative cursor-pointer transition-all duration-300"
+              className="relative cursor-pointer transition-all duration-250"
               style={{
                 fontSize: '15px',
-                fontWeight: 600,
-                background: isActive 
-                  ? 'linear-gradient(180deg, #d8d8da 0%, #c0c0c3 50%, #b0b0b3 100%)'
-                  : 'linear-gradient(180deg, #b5b7ba 0%, #9a9c9f 50%, #888a8d 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? '#5a5a5c' : '#6a6a6c',
                 textDecoration: 'none',
                 letterSpacing: '0.4px',
+                background: 'transparent',
                 border: 'none',
                 padding: '10px 20px',
                 outline: 'none',
                 zIndex: 20,
                 whiteSpace: 'nowrap',
-                // Deep engraved effect with inner shadows
-                filter: isActive 
-                  ? 'drop-shadow(0 1px 0 rgba(255, 255, 255, 0.6)) drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.5)) drop-shadow(1px 0 1px rgba(0, 0, 0, 0.3)) drop-shadow(-1px 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 8px rgba(216, 216, 218, 0.4))'
-                  : 'drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5)) drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.4)) drop-shadow(0.5px 0 0.5px rgba(0, 0, 0, 0.25)) drop-shadow(-0.5px 0 0.5px rgba(255, 255, 255, 0.3))',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "SF Pro", Poppins, sans-serif',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                // Crisp engraved effect - carved into surface
+                textShadow: isActive 
+                  ? `
+                    inset 0px 1px 1px rgba(0, 0, 0, 0.25),
+                    0px -1px 1px rgba(255, 255, 255, 0.6),
+                    0px 1px 0px rgba(255, 255, 255, 0.4),
+                    0px 2px 3px rgba(0, 0, 0, 0.15)
+                  `
+                  : `
+                    inset 0px 1px 1px rgba(0, 0, 0, 0.2),
+                    0px -1px 1px rgba(255, 255, 255, 0.5),
+                    0px 1px 0px rgba(255, 255, 255, 0.3),
+                    0px 2px 2px rgba(0, 0, 0, 0.12)
+                  `,
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = 'linear-gradient(180deg, #c8cacd 0%, #aaacaf 50%, #9a9c9f 100%)'
-                  e.currentTarget.style.filter = 'drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55)) drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.45)) drop-shadow(0.5px 0 0.5px rgba(0, 0, 0, 0.28)) drop-shadow(-0.5px 0 0.5px rgba(255, 255, 255, 0.35)) drop-shadow(0 0 6px rgba(200, 202, 205, 0.3))'
+                  e.currentTarget.style.color = '#4a4a4c'
+                  e.currentTarget.style.textShadow = `
+                    inset 0px 1px 1px rgba(0, 0, 0, 0.22),
+                    0px -1px 1px rgba(255, 255, 255, 0.55),
+                    0px 1px 0px rgba(255, 255, 255, 0.35),
+                    0px 2px 2.5px rgba(0, 0, 0, 0.14)
+                  `
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = 'linear-gradient(180deg, #b5b7ba 0%, #9a9c9f 50%, #888a8d 100%)'
-                  e.currentTarget.style.filter = 'drop-shadow(0 1px 0 rgba(255, 255, 255, 0.5)) drop-shadow(0 -1px 2px rgba(0, 0, 0, 0.4)) drop-shadow(0.5px 0 0.5px rgba(0, 0, 0, 0.25)) drop-shadow(-0.5px 0 0.5px rgba(255, 255, 255, 0.3))'
+                  e.currentTarget.style.color = '#6a6a6c'
+                  e.currentTarget.style.textShadow = `
+                    inset 0px 1px 1px rgba(0, 0, 0, 0.2),
+                    0px -1px 1px rgba(255, 255, 255, 0.5),
+                    0px 1px 0px rgba(255, 255, 255, 0.3),
+                    0px 2px 2px rgba(0, 0, 0, 0.12)
+                  `
                 }
               }}
             >
